@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -22,76 +22,97 @@
                                 <subviews>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NHB-Xn-RhA">
                                         <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
-                                        <animations/>
                                         <connections>
                                             <action selector="switchWasToggled:" destination="BYZ-38-t0r" eventType="valueChanged" id="Yfm-Kd-MD1"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Collect Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hsz-y7-6YP">
                                         <rect key="frame" x="61" y="0.0" width="499" height="31"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <animations/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Icm-VM-u2q">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Icm-VM-u2q">
                                 <rect key="frame" x="20" y="82" width="560" height="86"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Websocket Server Online" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCL-NN-upi">
-                                        <rect key="frame" x="0.0" y="0.0" width="193" height="21"/>
-                                        <animations/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="GPS Active" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDZ-au-9y0">
+                                        <rect key="frame" x="0.0" y="0.0" width="85" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Websocket Connection Active" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iwb-sk-yrX">
-                                        <rect key="frame" x="0.0" y="33" width="230" height="21"/>
-                                        <animations/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Websocket Server Online" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCL-NN-upi">
+                                        <rect key="frame" x="0.0" y="33" width="193" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPS Active" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDZ-au-9y0">
-                                        <rect key="frame" x="0.0" y="65" width="85" height="21"/>
-                                        <animations/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Websocket Connection Active" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iwb-sk-yrX">
+                                        <rect key="frame" x="0.0" y="65" width="230" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <animations/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="R8x-X5-PSp">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="R8x-X5-PSp">
                                 <rect key="frame" x="20" y="193" width="560" height="21"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Collected Events:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qTk-LR-aZ4">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Collected Events:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qTk-LR-aZ4">
                                         <rect key="frame" x="0.0" y="0.0" width="538" height="21"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yte-oh-nZW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yte-oh-nZW">
                                         <rect key="frame" x="550" y="0.0" width="11" height="21"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <animations/>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eWV-ky-1eW">
+                                <rect key="frame" x="20" y="239" width="450" height="5"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERV-WA-W26">
+                                        <rect key="frame" x="0.0" y="0.0" width="450" height="5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="5" id="fZG-w8-KoE"/>
+                                        </constraints>
+                                    </progressView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="trailing" secondItem="eWV-ky-1eW" secondAttribute="trailingMargin" id="5bf-2a-dEF"/>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="leading" secondItem="eWV-ky-1eW" secondAttribute="leading" id="FAW-QB-0Z2"/>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="leading" secondItem="eWV-ky-1eW" secondAttribute="leadingMargin" id="HFh-Q2-GBL"/>
+                                    <constraint firstAttribute="trailing" secondItem="ERV-WA-W26" secondAttribute="trailing" id="aNe-t5-ntG"/>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="leading" secondItem="eWV-ky-1eW" secondAttribute="leading" id="lfU-Kd-gPp"/>
+                                    <constraint firstAttribute="trailing" secondItem="ERV-WA-W26" secondAttribute="trailing" id="qJ2-Or-s8u"/>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="leading" secondItem="eWV-ky-1eW" secondAttribute="leading" id="vmO-v7-zgj"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="5bf-2a-dEF"/>
+                                        <exclude reference="FAW-QB-0Z2"/>
+                                        <exclude reference="HFh-Q2-GBL"/>
+                                        <exclude reference="lfU-Kd-gPp"/>
+                                        <exclude reference="qJ2-Or-s8u"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="eWV-ky-1eW" secondAttribute="trailing" constant="110" id="38t-x4-AgN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Y8o-iW-p24" secondAttribute="trailing" id="KHX-1v-TVv"/>
                             <constraint firstItem="R8x-X5-PSp" firstAttribute="top" secondItem="Icm-VM-u2q" secondAttribute="bottom" constant="25" id="P2I-Qx-YCz"/>
+                            <constraint firstItem="eWV-ky-1eW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="WdA-Y2-wf3"/>
                             <constraint firstItem="Icm-VM-u2q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Ya4-v5-qDj"/>
                             <constraint firstItem="Icm-VM-u2q" firstAttribute="top" secondItem="Y8o-iW-p24" secondAttribute="bottom" constant="19" id="fGV-BY-icL"/>
+                            <constraint firstItem="eWV-ky-1eW" firstAttribute="top" secondItem="R8x-X5-PSp" secondAttribute="bottom" constant="25" id="faa-F7-g4a"/>
                             <constraint firstItem="R8x-X5-PSp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="g3g-Xa-nyx"/>
                             <constraint firstItem="Y8o-iW-p24" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="12" id="iqR-Ve-vtl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Icm-VM-u2q" secondAttribute="trailing" id="l4m-gD-TFf"/>
@@ -102,6 +123,7 @@
                     <connections>
                         <outlet property="GPSActiveLabel" destination="hDZ-au-9y0" id="586-4m-8zh"/>
                         <outlet property="connectionActiveLabel" destination="iwb-sk-yrX" id="GSK-gH-TZa"/>
+                        <outlet property="distanceBar" destination="ERV-WA-W26" id="PGq-rg-W7h"/>
                         <outlet property="eventCountLabel" destination="yte-oh-nZW" id="4uD-3e-5fl"/>
                         <outlet property="serverOnlineLabel" destination="fCL-NN-upi" id="aPl-yg-9Ov"/>
                     </connections>

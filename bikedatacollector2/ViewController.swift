@@ -16,15 +16,17 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
     
     var websocketServer: PSWebSocketServer!
     var location: CLLocationManager!
-    var lastLocation: CLLocation?
     var ref: FIRDatabaseReference?
     var eventCount = 0
     var sessionName: String?
+    
+    var maxCM = 30
     
     @IBOutlet weak var serverOnlineLabel: UILabel!
     @IBOutlet weak var connectionActiveLabel: UILabel!
     @IBOutlet weak var GPSActiveLabel: UILabel!
     @IBOutlet weak var eventCountLabel: UILabel!
+    @IBOutlet weak var distanceBar: UIProgressView!
     
     override func viewDidLoad() {
         self.websocketServer = PSWebSocketServer(host:nil, port:8000)
@@ -56,6 +58,7 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
 
     @IBAction func switchWasToggled(sender: UISwitch) {
         if (sender.on) {
+            FIRDatabase.database().goOffline() // cache collected data, don't sync in realtime
             self.websocketServer.start()
             self.location.startUpdatingLocation()
             self.eventCount = 0
@@ -65,6 +68,7 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
             self.sessionName = nil
             self.websocketServer.stop()
             self.location.stopUpdatingLocation()
+            FIRDatabase.database().goOnline()
         }
     }
     
@@ -92,29 +96,26 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
     }
     
     func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didReceiveMessage message: AnyObject!) {
-        if let location = self.lastLocation {
-            self.eventCount = self.eventCount + 1
-            self.eventCountLabel.text = String(self.eventCount)
+        self.eventCount = self.eventCount + 1
+        self.eventCountLabel.text = String(self.eventCount)
+        
+        if let sess = self.sessionName {
+            self.ref!.child(sess).childByAutoId().setValue([
+                "timestamp": NSDate().timeIntervalSince1970,
+                "msg": message
+            ])
             
-            if let sess = self.sessionName {
-                if let coord = self.lastLocation {
-                    print(sess)
-                    print(coord)
-                    self.ref!.child(sess).childByAutoId().setValue([
-                        "timestamp": NSDate().timeIntervalSince1970,
-                        "coord": [ coord.coordinate.longitude, coord.coordinate.latitude ],
-                        "coordTimestamp": coord.timestamp.timeIntervalSince1970,
-                        "horizontalAccuracy": coord.horizontalAccuracy,
-                        "msg": message
-                    ])
+            if String(message).rangeOfString("/") != nil {
+                if let distance = Float(String(message).componentsSeparatedByString("/")[1]) {
+                    self.distanceBar.progress = distance / 30.0
+                    print(distance / 30.0)
                 }
+                
             }
-            
-            print("\(location) - \(message)")
+
         }
-        else {
-            print("no location found \(message)")
-        }
+        
+        print("\(location) - \(message)")
     }
     
     func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didFailWithError error: NSError!) {
@@ -126,10 +127,20 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
     
     // MARK: CLLocationManager delegate
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        self.lastLocation = locations.last
-        if let coord = self.lastLocation?.coordinate {
+        if let loc:CLLocation = locations.last! {
+            let coord = loc.coordinate
+            
             self.GPSActiveLabel.textColor = UIColor.blackColor()
             print("found location: \(coord.longitude), \(coord.latitude)")
+            
+            if let sess = self.sessionName {
+                self.ref!.child(sess).childByAutoId().setValue([
+                    "timestamp": NSDate().timeIntervalSince1970,
+                    "coord": [ coord.longitude, coord.latitude ],
+                    "coordTimestamp": loc.timestamp.timeIntervalSince1970,
+                    "horizontalAccuracy": loc.horizontalAccuracy
+                ])
+            }
         }
         else {
             self.GPSActiveLabel.textColor = UIColor.lightGrayColor()
