@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import AudioToolbox
 import PocketSocket
 import CoreLocation
 import Firebase
 import FirebaseDatabase
+
+
 
 class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationManagerDelegate {
     
@@ -19,19 +22,21 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
     var ref: FIRDatabaseReference?
     var eventCount = 0
     var sessionName: String?
+    var firstEvent: Bool! = true
     
-    var maxCM = 30
+    var maxCM = 300.0
     
     @IBOutlet weak var serverOnlineLabel: UILabel!
     @IBOutlet weak var connectionActiveLabel: UILabel!
     @IBOutlet weak var GPSActiveLabel: UILabel!
     @IBOutlet weak var eventCountLabel: UILabel!
+    @IBOutlet weak var runNameLabel: UILabel!
     @IBOutlet weak var distanceBar: UIProgressView!
     
     override func viewDidLoad() {
         self.websocketServer = PSWebSocketServer(host:nil, port:8000)
         self.websocketServer.delegate = self
-
+        
         let authStatus = CLLocationManager.authorizationStatus()
         
         if (authStatus != CLAuthorizationStatus.Denied) && (authStatus != CLAuthorizationStatus.Restricted) {
@@ -56,19 +61,34 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func switchWasToggled(sender: UISwitch) {
-        if (sender.on) {
+    @IBAction func buttonWasPressed(sender: UIButton) {
+        if self.sessionName == nil {
+            sender.setTitle("Stop Run", forState: UIControlState.Normal)
+            sender.backgroundColor = UIColor.redColor()
+            UIApplication.sharedApplication().idleTimerDisabled = true
             FIRDatabase.database().goOffline() // cache collected data, don't sync in realtime
             self.websocketServer.start()
             self.location.startUpdatingLocation()
             self.eventCount = 0
-            self.sessionName = ["bikedatacollector2", String(NSDate().timeIntervalSince1970).componentsSeparatedByString(".")[0]].joinWithSeparator("-")
+            self.firstEvent = true
+            
+            let dayTimePeriodFormatter = NSDateFormatter()
+            dayTimePeriodFormatter.dateFormat = "yMMdd-HHmmss"
+            
+            self.sessionName = ["bd2", dayTimePeriodFormatter.stringFromDate(NSDate())].joinWithSeparator("-")
+            self.runNameLabel.text = self.sessionName
+            self.runNameLabel.textColor = UIColor.blackColor()
         }
         else {
+            sender.setTitle("Start Run", forState: UIControlState.Normal)
+            sender.backgroundColor = self.view.tintColor
+            self.runNameLabel.textColor = UIColor.lightGrayColor()
             self.sessionName = nil
+            self.firstEvent = false
             self.websocketServer.stop()
             self.location.stopUpdatingLocation()
             FIRDatabase.database().goOnline()
+            UIApplication.sharedApplication().idleTimerDisabled = false
         }
     }
     
@@ -99,29 +119,46 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         self.eventCount = self.eventCount + 1
         self.eventCountLabel.text = String(self.eventCount)
         
+        if self.firstEvent! {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            self.firstEvent = false
+        }
+        
         if let sess = self.sessionName {
             self.ref!.child(sess).childByAutoId().setValue([
                 "timestamp": NSDate().timeIntervalSince1970,
                 "msg": message
             ])
             
+            print(">>> " + String(message))
+            
             if String(message).rangeOfString("/") != nil {
-                if let distance = Float(String(message).componentsSeparatedByString("/")[1]) {
-                    self.distanceBar.progress = distance / 30.0
-                    print(distance / 30.0)
+                if let distance = Double(String(message).componentsSeparatedByString("/")[1]) {
+                    self.distanceBar.progress = Float(distance / self.maxCM)
+//                    print("Distance: " + String(distance / self.maxCM))
                 }
-                
             }
-
+            else if String(message).rangeOfString("RANGE") != nil {
+                if let range = Double(String(message).componentsSeparatedByString(":")[1]) {
+                    print("Detected max sensor range as \(self.maxCM)cm")
+                    self.maxCM = range
+                }
+            }
         }
-        
-        print("\(location) - \(message)")
+    }
+    
+    func connectionFail() {
+        for _ in 1...2 {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+        }
     }
     
     func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didFailWithError error: NSError!) {
+        connectionFail()
     }
     
     func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean:Bool) {
+        connectionFail()
         self.connectionActiveLabel.textColor = UIColor.lightGrayColor()
     }
     
