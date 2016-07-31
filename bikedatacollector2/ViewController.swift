@@ -31,7 +31,8 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
     @IBOutlet weak var GPSActiveLabel: UILabel!
     @IBOutlet weak var eventCountLabel: UILabel!
     @IBOutlet weak var runNameLabel: UILabel!
-    @IBOutlet weak var distanceBar: UIProgressView!
+    @IBOutlet weak var distanceBar1: UIProgressView!
+    @IBOutlet weak var distanceBar2: UIProgressView!
     
     override func viewDidLoad() {
         self.websocketServer = PSWebSocketServer(host:nil, port:8000)
@@ -134,8 +135,10 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
             
             if String(message).rangeOfString("/") != nil {
                 if let distance = Double(String(message).componentsSeparatedByString("/")[1]) {
-                    self.distanceBar.progress = Float(distance / self.maxCM)
-//                    print("Distance: " + String(distance / self.maxCM))
+                    self.distanceBar1.progress = Float(distance / self.maxCM)
+                }
+                if let distance = Double(String(message).componentsSeparatedByString("/")[2]) {
+                    self.distanceBar2.progress = Float(distance / self.maxCM)
                 }
             }
             else if String(message).rangeOfString("RANGE") != nil {

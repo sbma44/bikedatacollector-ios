@@ -84,9 +84,9 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eWV-ky-1eW">
-                                <rect key="frame" x="20" y="207" width="560" height="28"/>
+                                <rect key="frame" x="20" y="207" width="560" height="57"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Sensor A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OqV-vV-Q2n">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Sensor 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OqV-vV-Q2n">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -98,8 +98,22 @@
                                             <constraint firstAttribute="height" constant="5" id="fZG-w8-KoE"/>
                                         </constraints>
                                     </progressView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Sensor 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kC-MC-t4w">
+                                        <rect key="frame" x="0.0" y="30" width="560" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W6B-RZ-jSl">
+                                        <rect key="frame" x="0.0" y="52" width="560" height="5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="5" id="kpc-hX-mOI"/>
+                                        </constraints>
+                                    </progressView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="W6B-RZ-jSl" firstAttribute="width" secondItem="eWV-ky-1eW" secondAttribute="width" id="28G-gn-Aje"/>
+                                    <constraint firstItem="ERV-WA-W26" firstAttribute="width" secondItem="eWV-ky-1eW" secondAttribute="width" id="aS4-iL-NnV"/>
                                     <constraint firstItem="ERV-WA-W26" firstAttribute="width" secondItem="eWV-ky-1eW" secondAttribute="width" id="iMb-mL-IuK"/>
                                 </constraints>
                             </stackView>
@@ -124,6 +138,7 @@
                         <constraints>
                             <constraint firstItem="wEN-JZ-jOd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="11j-FQ-F29"/>
                             <constraint firstAttribute="trailingMargin" secondItem="wEN-JZ-jOd" secondAttribute="trailingMargin" id="ATb-kb-z1g"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="OqV-vV-Q2n" secondAttribute="leading" id="CBf-Mg-Gwv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eWV-ky-1eW" secondAttribute="trailing" id="GOW-fo-lt2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Icm-VM-u2q" secondAttribute="trailingMargin" id="Nrk-Ez-OoK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eUm-Sb-PcY" secondAttribute="trailing" id="OXJ-X4-adr"/>
@@ -137,7 +152,8 @@
                     <connections>
                         <outlet property="GPSActiveLabel" destination="hDZ-au-9y0" id="586-4m-8zh"/>
                         <outlet property="connectionActiveLabel" destination="iwb-sk-yrX" id="GSK-gH-TZa"/>
-                        <outlet property="distanceBar" destination="ERV-WA-W26" id="PGq-rg-W7h"/>
+                        <outlet property="distanceBar1" destination="ERV-WA-W26" id="5IW-rB-mNY"/>
+                        <outlet property="distanceBar2" destination="W6B-RZ-jSl" id="cdP-4v-akd"/>
                         <outlet property="eventCountLabel" destination="yte-oh-nZW" id="4uD-3e-5fl"/>
                         <outlet property="runNameLabel" destination="hxh-r7-5te" id="oXo-GW-oc9"/>
                         <outlet property="serverOnlineLabel" destination="fCL-NN-upi" id="aPl-yg-9Ov"/>
