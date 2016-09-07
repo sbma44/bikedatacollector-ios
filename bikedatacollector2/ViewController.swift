@@ -178,7 +178,8 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
                     "timestamp": NSDate().timeIntervalSince1970,
                     "coord": [ coord.longitude, coord.latitude ],
                     "coordTimestamp": loc.timestamp.timeIntervalSince1970,
-                    "horizontalAccuracy": loc.horizontalAccuracy
+                    "horizontalAccuracy": loc.horizontalAccuracy,
+                    "speed": loc.speed
                 ])
             }
         }
