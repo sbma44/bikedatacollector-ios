@@ -17,6 +17,11 @@ import FirebaseDatabase
 
 class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationManagerDelegate {
     
+    
+    public func server(_ server: PSWebSocketServer!, didFailWithError error: Error!) {
+    }
+
+    
     var websocketServer: PSWebSocketServer!
     var location: CLLocationManager!
     var ref: FIRDatabaseReference?
@@ -40,12 +45,12 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         
         let authStatus = CLLocationManager.authorizationStatus()
         
-        if (authStatus != CLAuthorizationStatus.Denied) && (authStatus != CLAuthorizationStatus.Restricted) {
+        if (authStatus != CLAuthorizationStatus.denied) && (authStatus != CLAuthorizationStatus.restricted) {
             
             self.location = CLLocationManager()
             self.location.delegate = self
             
-            if authStatus == CLAuthorizationStatus.NotDetermined {
+            if authStatus == CLAuthorizationStatus.notDetermined {
                 self.location.requestAlwaysAuthorization()
             }
             
@@ -62,61 +67,57 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func buttonWasPressed(sender: UIButton) {
+    @IBAction func buttonWasPressed(_ sender: UIButton) {
         if self.sessionName == nil {
-            sender.setTitle("Stop Run", forState: UIControlState.Normal)
-            sender.backgroundColor = UIColor.redColor()
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            sender.setTitle("Stop Run", for: UIControlState())
+            sender.backgroundColor = UIColor.red
+            UIApplication.shared.isIdleTimerDisabled = true
             FIRDatabase.database().goOffline() // cache collected data, don't sync in realtime
             self.websocketServer.start()
             self.location.startUpdatingLocation()
             self.eventCount = 0
             self.firstEvent = true
             
-            let dayTimePeriodFormatter = NSDateFormatter()
+            let dayTimePeriodFormatter = DateFormatter()
             dayTimePeriodFormatter.dateFormat = "yMMdd-HHmmss"
             
-            self.sessionName = ["bd2", dayTimePeriodFormatter.stringFromDate(NSDate())].joinWithSeparator("-")
+            self.sessionName = ["bd2", dayTimePeriodFormatter.string(from: Date())].joined(separator: "-")
             self.runNameLabel.text = self.sessionName
-            self.runNameLabel.textColor = UIColor.blackColor()
+            self.runNameLabel.textColor = UIColor.black
         }
         else {
-            sender.setTitle("Start Run", forState: UIControlState.Normal)
+            sender.setTitle("Start Run", for: UIControlState())
             sender.backgroundColor = self.view.tintColor
-            self.runNameLabel.textColor = UIColor.lightGrayColor()
+            self.runNameLabel.textColor = UIColor.lightGray
             self.sessionName = nil
             self.firstEvent = false
             self.websocketServer.stop()
             self.location.stopUpdatingLocation()
             FIRDatabase.database().goOnline()
-            UIApplication.sharedApplication().idleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
     
     // MARK: PSWebSocketServerDelegate
-    func serverDidStart(server: PSWebSocketServer!) {
-        self.serverOnlineLabel.textColor = UIColor.blackColor()
+    func serverDidStart(_ server: PSWebSocketServer!) {
+        self.serverOnlineLabel.textColor = UIColor.black
         print("started websocket server")
     }
     
-    func server(server: PSWebSocketServer!, didFailWithError: NSError!) {
-        print(didFailWithError)
-    }
-    
-    func serverDidStop(server: PSWebSocketServer!) {
-        self.serverOnlineLabel.textColor = UIColor.lightGrayColor()
+    func serverDidStop(_ server: PSWebSocketServer!) {
+        self.serverOnlineLabel.textColor = UIColor.lightGray
         print("stopped websocket server")
     }
     
-    func server(server: PSWebSocketServer!, acceptWebSocketWithRequest request: NSURLRequest!) -> Bool {
+    func server(_ server: PSWebSocketServer!, acceptWebSocketWith request: URLRequest!) -> Bool {
         return true
     }
     
-    func server(server: PSWebSocketServer!, webSocketDidOpen webSocket: PSWebSocket!) {
-        self.connectionActiveLabel.textColor = UIColor.blackColor()
+    func server(_ server: PSWebSocketServer!, webSocketDidOpen webSocket: PSWebSocket!) {
+        self.connectionActiveLabel.textColor = UIColor.black
     }
     
-    func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didReceiveMessage message: AnyObject!) {
+    func server(_ server: PSWebSocketServer!, webSocket: PSWebSocket!, didReceiveMessage message: Any!) {
         self.eventCount = self.eventCount + 1
         self.eventCountLabel.text = String(self.eventCount)
         
@@ -127,22 +128,22 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         
         if let sess = self.sessionName {
             self.ref!.child(sess).childByAutoId().setValue([
-                "timestamp": NSDate().timeIntervalSince1970,
+                "timestamp": Date().timeIntervalSince1970,
                 "msg": message
             ])
             
-            print(">>> " + String(message))
+            print(">>> " + String(describing: message))
             
-            if String(message).rangeOfString("/") != nil {
-                if let distance = Double(String(message).componentsSeparatedByString("/")[1]) {
+            if String(describing: message).range(of: "/") != nil {
+                if let distance = Double(String(describing: message).components(separatedBy: "/")[1]) {
                     self.distanceBar1.progress = Float(distance / self.maxCM)
                 }
-                if let distance = Double(String(message).componentsSeparatedByString("/")[2]) {
+                if let distance = Double(String(describing: message).components(separatedBy: "/")[2]) {
                     self.distanceBar2.progress = Float(distance / self.maxCM)
                 }
             }
-            else if String(message).rangeOfString("RANGE") != nil {
-                if let range = Double(String(message).componentsSeparatedByString(":")[1]) {
+            else if String(describing: message).range(of: "RANGE") != nil {
+                if let range = Double(String(describing: message).components(separatedBy: ":")[1]) {
                     print("Detected max sensor range as \(self.maxCM)cm")
                     self.maxCM = range
                 }
@@ -156,26 +157,26 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
         }
     }
     
-    func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didFailWithError error: NSError!) {
+    func server(_ server: PSWebSocketServer!, webSocket: PSWebSocket!, didFailWithError error: Error!) {
         connectionFail()
     }
     
-    func server(server: PSWebSocketServer!, webSocket: PSWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean:Bool) {
+    func server(_ server: PSWebSocketServer!, webSocket: PSWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean:Bool) {
         connectionFail()
-        self.connectionActiveLabel.textColor = UIColor.lightGrayColor()
+        self.connectionActiveLabel.textColor = UIColor.lightGray
     }
     
     // MARK: CLLocationManager delegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let loc:CLLocation = locations.last! {
             let coord = loc.coordinate
             
-            self.GPSActiveLabel.textColor = UIColor.blackColor()
+            self.GPSActiveLabel.textColor = UIColor.black
             print("found location: \(coord.longitude), \(coord.latitude)")
             
             if let sess = self.sessionName {
                 self.ref!.child(sess).childByAutoId().setValue([
-                    "timestamp": NSDate().timeIntervalSince1970,
+                    "timestamp": Date().timeIntervalSince1970,
                     "coord": [ coord.longitude, coord.latitude ],
                     "coordTimestamp": loc.timestamp.timeIntervalSince1970,
                     "horizontalAccuracy": loc.horizontalAccuracy,
@@ -184,7 +185,7 @@ class ViewController: UIViewController, PSWebSocketServerDelegate, CLLocationMan
             }
         }
         else {
-            self.GPSActiveLabel.textColor = UIColor.lightGrayColor()
+            self.GPSActiveLabel.textColor = UIColor.lightGray
         }
     }
     
